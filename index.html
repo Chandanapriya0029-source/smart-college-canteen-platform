@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart College Canteen Platform · Live Operations & Gemini AI</title>
+  
+  <!-- Modern Google Fonts: Plus Jakarta Sans & SF Pro aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/design-tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/student-view.css">
+  <link rel="stylesheet" href="css/manager-kds.css">
+  <link rel="stylesheet" href="css/admin-view.css">
+</head>
+<body>
+
+  <!-- Master Platform Navigation Bar -->
+  <header class="platform-header">
+    <div class="platform-header-content">
+      <div class="brand-badge">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>Campus Canteen OS</h1>
+          <p>Capacity-Controlled Ordering &amp; Gemini AI · 200 Students</p>
+        </div>
+      </div>
+
+      <!-- Segmented View Switcher -->
+      <nav class="view-nav">
+        <button class="nav-tab-btn active" data-target="view-split-demo">
+          <span>🔄</span> Live Split Demo
+        </button>
+        <button class="nav-tab-btn" data-target="view-student">
+          <span>📱</span> Student Mobile
+        </button>
+        <button class="nav-tab-btn" data-target="view-manager">
+          <span>🖥️</span> Kitchen KDS
+        </button>
+        <button class="nav-tab-btn" data-target="view-admin">
+          <span>⚙️</span> Policy Engine
+        </button>
+      </nav>
+
+      <!-- Quick Action Presets & Gemini API Key Config -->
+      <div class="header-actions">
+        <button class="quick-demo-btn" id="btn-open-gemini-modal" style="background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%); border-color: #6366F1; color: #4F46E5;">
+          <span id="gemini-status-dot">🔑</span> <span id="gemini-btn-text">Gemini API Key</span>
+        </button>
+        <button class="quick-demo-btn" id="btn-run-dinner-demo" title="Runs end-to-end 7:10 PM dinner rush scenario">
+          <span>▶</span> Run Dinner Demo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" id="global-toast-container"></div>
+
+  <!-- Master Viewport Container -->
+  <main class="main-viewport">
+
+    <!-- ====================================================================
+         VIEW 1: SPLIT INTERACTIVE DEMO (Student + Kitchen Side-by-Side)
+         ==================================================================== -->
+    <section class="view-section active-view" id="view-split-demo">
+      <div class="split-view-container">
+        <!-- Left Column: Student iPhone Frame -->
+        <div id="split-student-slot">
+          <!-- The student mobile frame will be mounted here -->
+          <div class="mobile-device-shell" id="student-device-shell-wrapper">
+            <div class="device-notch">
+              <div class="notch-camera"></div>
+              <div class="notch-speaker"></div>
+            </div>
+
+            <div class="device-screen">
+              <div class="student-app-container">
+                <!-- iOS Status Bar -->
+                <div class="ios-status-bar">
+                  <span class="ios-time" id="ios-current-time">7:10 PM</span>
+                  <div class="ios-icons">
+                    <span>📶</span>
+                    <span>5G</span>
+                    <span>🔋 94%</span>
+                  </div>
+                </div>
+
+                <!-- Live Demand Header Card -->
+                <div class="student-header-card">
+                  <div class="student-greeting">Campus Dining · North Canteen</div>
+                  <div class="student-title">
+                    <span>Good evening 👋</span>
+                  </div>
+                  
+                  <div class="live-status-pill">
+                    <div class="live-pulse-indicator">
+                      <span class="pulse-dot"></span>
+                      <span>Dinner is Live</span>
+                    </div>
+                    <span class="est-wait-badge">⏱️ Est. Wait: 12 min</span>
+                  </div>
+
+                  <!-- Peak Demand Micro-Indicator -->
+                  <div class="rush-meter-box">
+                    <span style="color: var(--text-muted); font-weight: 600;">Rush Level:</span>
+                    <div class="rush-levels">
+                      <div class="rush-bar active-low"></div>
+                      <div class="rush-bar active-med"></div>
+                      <div class="rush-bar active-high"></div>
+                      <div class="rush-bar"></div>
+                    </div>
+                    <span style="font-weight: 700; color: #EF4444;">PEAK (7:30 PM)</span>
+                  </div>
+                </div>
+
+                <!-- Gemini AI Student Assistant Banner -->
+                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: var(--radius-md); padding: 0.65rem 0.85rem; display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); font-weight: 700; color: var(--primary-700);">
+                    <span>✨</span>
+                    <span>Ask Gemini Meal Advisor</span>
+                  </div>
+                  <button class="btn-secondary" id="btn-open-student-ai-modal" style="font-size: 0.68rem; padding: 0.2rem 0.55rem; background: white;">
+                    Ask AI 💬
+                  </button>
+                </div>
+
+                <!-- Menu View Container -->
+                <div id="student-menu-view">
+                  <!-- Category Pills Scroller -->
+                  <div class="category-scroller">
+                    <button class="category-pill active" data-category="all">✨ All Items</button>
+                    <button class="category-pill" data-category="specials">🍛 Dinner Specials</button>
+                    <button class="category-pill" data-category="quick_bites">🥪 Quick Bites</button>
+                    <button class="category-pill" data-category="beverages">☕ Beverages</button>
+                  </div>
+
+                  <!-- Food Menu List (Populated via JS) -->
+                  <div class="menu-grid" id="student-menu-list" style="margin-top: 0.75rem;"></div>
+                </div>
+
+                <!-- Active Pickup Pass View Container (Hidden until order is confirmed) -->
+                <div id="student-active-pass-view" style="display: none;"></div>
+
+              </div>
+
+              <!-- Floating Sticky Cart with 5-Minute TTL Lock Countdown -->
+              <div class="floating-cart-bar" id="student-floating-cart" style="display: none;">
+                <div class="cart-timer-row">
+                  <span>🔒 Stock Reserved for</span>
+                  <div class="cart-timer-badge">
+                    <span>⏱️</span>
+                    <span id="cart-countdown-timer">05:00</span>
+                  </div>
+                </div>
+                <div class="cart-main-row">
+                  <div>
+                    <span class="cart-count-badge" id="cart-items-count">1 item</span>
+                    <span class="cart-total-text" id="cart-total-price" style="margin-left: 0.5rem;">₹120</span>
+                  </div>
+                  <button class="btn-checkout-trigger" id="btn-open-slot-modal">
+                    <span>Choose Slot</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Kitchen Display System (KDS) Live Operations -->
+        <div class="manager-dashboard" id="split-manager-slot">
+          <!-- KDS Header & Quick QR Scanner Trigger -->
+          <div class="scanner-trigger-bar">
+            <div>
+              <h2 style="font-size: var(--text-base); font-weight: 800; letter-spacing: -0.02em;">
+                Live Kitchen Operations · Dinner Window
+              </h2>
+              <p style="font-size: var(--text-xs); color: var(--text-muted);">
+                Max Capacity: <strong>20 orders / 15-min slot</strong> · Throttles excess demand automatically
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn-secondary" id="btn-kds-gemini-advice" style="font-size: var(--text-xs); padding: 0.6rem 0.9rem; border-color: var(--primary-500); color: var(--primary-700);">
+                <span>✨</span> Gemini Batch Forecast
+              </button>
+              <button class="btn-primary" id="btn-open-qr-scanner" style="width: auto; padding: 0.6rem 1.1rem;">
+                <span>📷</span> Express QR Scanner
+              </button>
+            </div>
+          </div>
+
+          <!-- KDS Metrics Counters -->
+          <div class="kds-metrics-bar">
+            <div class="kds-stat-card">
+              <span class="stat-label">Active Orders <span>📦</span></span>
+              <span class="stat-number" id="kds-metric-active">42</span>
+              <span class="stat-subtext">Across all dinner slots</span>
+            </div>
+            <div class="kds-stat-card warning-card">
+              <span class="stat-label">Preparing <span>👨‍🍳</span></span>
+              <span class="stat-number" id="kds-metric-prep" style="color: #D97706;">11</span>
+              <span class="stat-subtext">On counter grills</span>
+            </div>
+            <div class="kds-stat-card success-card">
+              <span class="stat-label">Ready for Pickup <span>🟢</span></span>
+              <span class="stat-number" id="kds-metric-ready" style="color: #10B981;">8</span>
+              <span class="stat-subtext">In pickup rack</span>
+            </div>
+            <div class="kds-stat-card alert-card">
+              <span class="stat-label">Pickup Overdue <span>⚠️</span></span>
+              <span class="stat-number" id="kds-metric-overdue" style="color: #EF4444;">3</span>
+              <span class="stat-subtext">10m Grace period active</span>
+            </div>
+            <div class="kds-stat-card">
+              <span class="stat-label">Low-Stock <span>🚨</span></span>
+              <span class="stat-number" id="kds-metric-lowstock" style="color: #6366F1;">2</span>
+              <span class="stat-subtext">Items &lt; 3 portions left</span>
+            </div>
+          </div>
+
+          <!-- 15-Minute Peak Demand Slot Heatmap -->
+          <div class="demand-heatmap-card">
+            <div class="heatmap-header">
+              <div class="heatmap-title">
+                <span>🔥</span> Peak Demand &amp; Slot Capacity Load
+              </div>
+              <span style="font-size: var(--text-xs); color: var(--text-muted);">
+                Kitchen Throttle: <strong>20 orders max/slot</strong>
+              </span>
+            </div>
+            <div class="slot-heatmap-grid" id="kds-slot-heatmap"></div>
+          </div>
+
+          <!-- Live Kanban Columns -->
+          <div class="kds-kanban-board">
+            <!-- Col 1: Queued / Placed -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span class="col-title"><span>📥</span> Queued</span>
+                <span class="col-count" id="kds-count-queued">0</span>
+              </div>
+              <div class="kanban-cards-stack" id="kds-col-queued"></div>
+            </div>
+
+            <!-- Col 2: Preparing -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span class="col-title"><span>👨‍🍳</span> Preparing</span>
+                <span class="col-count" id="kds-count-prep">0</span>
+              </div>
+              <div class="kanban-cards-stack" id="kds-col-prep"></div>
+            </div>
+
+            <!-- Col 3: Ready for Pickup -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span class="col-title"><span>🟢</span> Ready</span>
+                <span class="col-count" id="kds-count-ready">0</span>
+              </div>
+              <div class="kanban-cards-stack" id="kds-col-ready"></div>
+            </div>
+
+            <!-- Col 4: Overdue & Grace Period -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span class="col-title"><span>⚠️</span> Overdue (Grace)</span>
+                <span class="col-count" id="kds-count-overdue">0</span>
+              </div>
+              <div class="kanban-cards-stack" id="kds-col-overdue"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 2: STUDENT MOBILE FULL-SCREEN
+         ==================================================================== -->
+    <section class="view-section" id="view-student">
+      <div id="single-student-slot" style="display: flex; justify-content: center; padding: 1rem 0;">
+        <!-- iPhone frame dynamically moves here when tab is switched -->
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 3: MANAGER KDS FULL VIEW
+         ==================================================================== -->
+    <section class="view-section" id="view-manager">
+      <div id="full-manager-slot"></div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 4: ADMIN LAYER, POLICY ENGINE & RUSH SIMULATOR
+         ==================================================================== -->
+    <section class="view-section" id="view-admin">
+      <div class="admin-dashboard">
+        <div class="admin-grid-layout">
+          
+          <!-- Policy Engine Configurator -->
+          <div class="policy-config-card">
+            <div class="policy-card-title">
+              <span>⚖️</span> Dynamic Refund &amp; Capacity Policy Engine
+            </div>
+            <p style="font-size: var(--text-xs); color: var(--text-muted);">
+              Configure college canteen operational rules without hardcoded percentages.
+            </p>
+
+            <!-- Pre-Prep Refund Policy -->
+            <div class="policy-row">
+              <div class="policy-label-row">
+                <span class="policy-title">1. Before Preparation (Placed)</span>
+                <span class="policy-val-badge" id="val-pre-prep">100%</span>
+              </div>
+              <p class="policy-desc">Full instant refund. Food items are automatically restocked to live inventory.</p>
+              <input type="range" class="policy-slider" id="slider-pre-prep" min="0" max="100" step="5" value="100">
+            </div>
+
+            <!-- During Preparation Refund Policy -->
+            <div class="policy-row">
+              <div class="policy-label-row">
+                <span class="policy-title">2. Preparation Started (Cooking)</span>
+                <span class="policy-val-badge" id="val-prep">50%</span>
+              </div>
+              <p class="policy-desc">Partial refund to recover raw material costs incurred by kitchen staff.</p>
+              <input type="range" class="policy-slider" id="slider-prep" min="0" max="100" step="5" value="50">
+            </div>
+
+            <!-- Ready for Pickup Refund Policy -->
+            <div class="policy-row">
+              <div class="policy-label-row">
+                <span class="policy-title">3. Ready for Pickup / Packaged</span>
+                <span class="policy-val-badge" id="val-ready">0%</span>
+              </div>
+              <p class="policy-desc">Zero refund. Sunk food cost cannot be repurposed as fresh meal.</p>
+              <input type="range" class="policy-slider" id="slider-ready" min="0" max="100" step="5" value="0">
+            </div>
+
+            <!-- Grace Period Slider -->
+            <div class="policy-row">
+              <div class="policy-label-row">
+                <span class="policy-title">4. Uncollected Order Grace Period</span>
+                <span class="policy-val-badge" id="val-grace">10 min</span>
+              </div>
+              <p class="policy-desc">Time allowed after slot closes before an uncollected order expires.</p>
+              <input type="range" class="policy-slider" id="slider-grace" min="5" max="30" step="1" value="10">
+            </div>
+
+            <!-- Max Slot Capacity Slider -->
+            <div class="policy-row">
+              <div class="policy-label-row">
+                <span class="policy-title">5. Kitchen Capacity Ceiling ($C_{\text{slot}}$)</span>
+                <span class="policy-val-badge" id="val-capacity">20 orders</span>
+              </div>
+              <p class="policy-desc">Maximum orders processed per 15-minute window before throttling triggers.</p>
+              <input type="range" class="policy-slider" id="slider-capacity" min="10" max="40" step="1" value="20">
+            </div>
+          </div>
+
+          <!-- Rush Demand Simulator & Stock Overrides -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="simulator-panel">
+              <div class="policy-card-title">
+                <span>⚡</span> Peak Demand Surge Simulator
+              </div>
+              <p style="font-size: var(--text-xs); color: var(--text-secondary);">
+                Demonstrate the queue-management algorithm handling simultaneous peak rushes:
+              </p>
+
+              <div class="sim-btn-grid">
+                <button class="btn-sim-action" id="btn-sim-rush">
+                  <span>🚀</span> Simulate 15-Order Rush
+                </button>
+                <button class="btn-sim-action" id="btn-sim-grace-expire">
+                  <span>⏰</span> Expire Overdue Orders
+                </button>
+              </div>
+
+              <div style="margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: var(--text-xs); color: var(--text-muted);">Reset all state back to initial seed:</span>
+                <button class="btn-secondary" id="btn-sim-reset" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+                  🔄 Reset State
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Stock Override Controls -->
+            <div class="glass-card" style="padding: 1.25rem;">
+              <div style="font-size: var(--text-sm); font-weight: 800; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>📦</span> Live Kitchen Stock Overrides
+              </div>
+              <div id="kds-stock-override-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Real-Time Audit Log Feed -->
+        <div class="audit-log-card">
+          <div class="heatmap-title">
+            <span>📜</span> Real-Time Audit Trail &amp; Telemetry
+          </div>
+          <div class="audit-table-wrapper">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Event</th>
+                  <th>Operational Detail</th>
+                </tr>
+              </thead>
+              <tbody id="admin-audit-log-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODALS & DIALOGS
+       ==================================================================== -->
+
+  <!-- Modal: Gemini API Key Configurator -->
+  <div class="modal-overlay" id="modal-gemini-config">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800; display: flex; align-items: center; gap: 0.4rem;">
+          <span>✨</span> Google Gemini API Configuration
+        </h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="document.getElementById('modal-gemini-config').classList.remove('active')">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.5;">
+          Connect your <strong>Gemini API Key</strong> (from <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--primary-600); font-weight: 700;">Google AI Studio</a>) to unlock real-time kitchen batch cooking forecasts, peak demand predictions, and student meal advisor.
+        </p>
+
+        <div>
+          <label style="font-size: var(--text-xs); font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 0.35rem;">
+            Gemini API Key:
+          </label>
+          <input type="password" id="input-gemini-api-key" placeholder="AIzaSy..." 
+                 style="width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--glass-border-subtle); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--text-xs);">
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="document.getElementById('modal-gemini-config').classList.remove('active')">Cancel</button>
+          <button class="btn-secondary" style="flex: 1; border-color: rgba(239, 68, 68, 0.4); color: var(--danger-500, #ef4444);" id="btn-clear-gemini-key">Remove Key</button>
+          <button class="btn-primary" style="flex: 1;" id="btn-save-gemini-key">Save &amp; Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Gemini AI Response Output / Assistant -->
+  <div class="modal-overlay" id="modal-gemini-output">
+    <div class="modal-box" style="max-width: 540px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800; display: flex; align-items: center; gap: 0.4rem;" id="gemini-modal-title">
+          <span>✨</span> Gemini Intelligence
+        </h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="document.getElementById('modal-gemini-output').classList.remove('active')">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div id="gemini-modal-content" style="background: var(--bg-canvas-subtle); padding: 1.2rem; border-radius: var(--radius-md); font-size: var(--text-xs); line-height: 1.6; max-height: 380px; overflow-y: auto;">
+          Loading Gemini analysis...
+        </div>
+
+        <div id="gemini-student-chat-bar" style="display: none; gap: 0.5rem;">
+          <input type="text" id="gemini-student-input" placeholder="e.g. 'What can I get under ₹100 for dinner with zero wait?'" 
+                 style="flex: 1; padding: 0.6rem 0.85rem; border: 1px solid var(--glass-border-subtle); border-radius: var(--radius-md); font-size: var(--text-xs);">
+          <button class="btn-primary" style="width: auto; padding: 0.6rem 1rem;" id="btn-send-student-ai">Ask</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 1: Capacity-Aware Slot Picker Bottom Sheet -->
+  <div class="modal-overlay" id="modal-slot-picker">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800;">Choose Pickup Slot</h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="studentApp.closeSlotModal()">✕</button>
+      </div>
+
+      <div class="slot-selection-panel">
+        <div class="slot-explanation">
+          🛡️ <strong>Capacity Protection Active:</strong> Slots are capped at 20 orders to guarantee zero kitchen wait. 7:30 PM is currently full.
+        </div>
+
+        <div class="slot-chips-grid" id="slot-chips-list"></div>
+
+        <button class="btn-primary" style="margin-top: 0.75rem;" onclick="studentApp.proceedToPaymentModal()">
+          Proceed to Payment →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Digital Payment & UPI Verification -->
+  <div class="modal-overlay" id="modal-payment">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800;">Digital Campus Pay</h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="studentApp.closePaymentModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="background: var(--bg-canvas-subtle); padding: 1rem; border-radius: var(--radius-md); font-size: var(--text-xs);">
+          <div style="font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+            Order Summary
+          </div>
+          <div id="payment-items-breakdown"></div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #CBD5E1;">
+            <span>Pickup Window:</span>
+            <strong id="payment-slot-selected">7:45 – 8:00 PM</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #94A3B8; font-size: var(--text-base); font-weight: 800;">
+            <span>Total Payable:</span>
+            <span id="payment-total-amount" style="color: var(--primary-700);">₹120</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <label style="font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary);">Select Payment Mode:</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-secondary" style="flex: 1; border-color: var(--primary-500); background: var(--primary-50); color: var(--primary-700); font-size: 0.75rem;">
+              ⚡ UPI / GPay
+            </button>
+            <button class="btn-secondary" style="flex: 1; font-size: 0.75rem;">
+              💳 Campus Card
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-confirm-payment">
+          Pay &amp; Confirm Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Cancellation with Dynamic Policy Engine -->
+  <div class="modal-overlay" id="modal-cancel-order">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800; color: var(--status-danger);">Cancel Order</h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="studentApp.closeCancelModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div id="cancel-policy-details"></div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="studentApp.closeCancelModal()">Keep Order</button>
+          <button class="btn-danger" style="flex: 1;" onclick="studentApp.confirmCancellation()">Confirm Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Manager QR Scanner & Verification -->
+  <div class="modal-overlay" id="modal-qr-scanner">
+    <div class="modal-box" style="max-width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: var(--text-base); font-weight: 800; display: flex; align-items: center; gap: 0.4rem;">
+          <span>📷</span> Express QR Pickup Verification
+        </h3>
+        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);" onclick="managerApp.closeScannerModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Simulated Viewfinder with Sweeping Laser -->
+        <div class="scanner-viewfinder">
+          <div class="viewfinder-target">
+            <div class="viewfinder-laser"></div>
+          </div>
+        </div>
+
+        <!-- Verification Output Box -->
+        <div id="scanner-verification-result">
+          <div style="text-align: center; color: var(--text-muted); font-size: var(--text-xs); padding: 0.5rem 0;">
+            Point scanner at student's QR pass or select a quick test token below:
+          </div>
+        </div>
+
+        <!-- Quick-Scan Test Buttons for Presentation -->
+        <div>
+          <div style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">
+            ⚡ Quick Test Scan Active Orders:
+          </div>
+          <div id="quick-scan-test-buttons" style="display: flex; flex-wrap: wrap; gap: 0.4rem;"></div>
+        </div>
+
+        <!-- Manual QR Token Input -->
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <input type="text" id="manual-qr-input" placeholder="Paste Token (e.g. CANTEEN-ORD-4088-VERIFIED-PASS)" 
+                 style="flex: 1; padding: 0.55rem 0.75rem; border: 1px solid var(--glass-border-subtle); border-radius: var(--radius-md); font-size: var(--text-xs);">
+          <button class="btn-primary" style="width: auto; padding: 0.55rem 1rem;" onclick="managerApp.submitManualQR()">Verify</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/state-engine.js"></script>
+  <script src="js/gemini-service.js"></script>
+  <script src="js/student-app.js"></script>
+  <script src="js/manager-app.js"></script>
+  <script src="js/admin-app.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
