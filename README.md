@@ -1,47 +1,101 @@
-# Campus Canteen OS · Smart Management Platform & Gemini AI
+# Campus Canteen OS
 
-A capacity-controlled smart college canteen management and ordering platform for ~200 students with real-time inventory visibility, 5-minute reservation TTL holds, scheduled pickup slot throttling, and **Google Gemini AI** demand intelligence.
+### Smart College Canteen Management & Ordering Platform
 
----
+Campus Canteen OS is a smart college canteen management and ordering platform designed for a college environment of approximately 200 students.
 
-## 🚀 Live Cloud Deployment Options (No Local Drive Needed)
+The platform focuses on reducing peak-hour congestion, providing real-time menu and inventory visibility, enabling advance ordering and scheduled pickup, simplifying payments, and helping canteen managers efficiently manage orders and demand.
 
-You can deploy this project live to the web in under 2 minutes using any of the following free platforms:
+## Live Demo
 
-### Option 1: Deploy to Vercel (Recommended - 1 Click)
-1. Push this folder to a GitHub repository (e.g. `https://github.com/your-username/canteen-platform`).
-2. Go to [vercel.com/new](https://vercel.com/new).
-3. Import your GitHub repository.
-4. (Optional) In **Environment Variables**, add:
-   - `GEMINI_API_KEY` = `your_gemini_api_key_from_google_ai_studio`
-5. Click **Deploy**. Your app is live instantly with a public `.vercel.app` URL!
+**Netlify:** https://spectacular-nasturtium-baf692.netlify.app/
 
----
+## Key Features
 
-### Option 2: Deploy to Netlify (Drag & Drop or Git)
-1. Go to [app.netlify.com/drop](https://app.netlify.com/drop).
-2. Drag and drop the `canteen-platform` folder into Netlify.
-3. Your site goes live instantly on a free `.netlify.app` domain.
-4. Click the **"🔑 Gemini API Key"** button in the app header and paste your key.
+### Student Experience
 
----
+* View today's menu
+* Check real-time food availability
+* Browse and search food items
+* Add items to cart
+* Reserve available inventory
+* Select scheduled pickup slots
+* Place orders in advance
+* Track order status
+* Receive an order number and QR/token
+* Cancel eligible orders according to refund policies
 
-### Option 3: Deploy to Render / Railway / Google Cloud Run
-1. Connect your GitHub repository to [render.com](https://render.com) (Web Service).
-2. Set Build Command: `npm install`
-3. Set Start Command: `npm start`
-4. Add Environment Variable:
-   - `GEMINI_API_KEY` = `your_key`
+### Canteen Management
 
----
+* Manage menu items and prices
+* Monitor inventory
+* Prevent overselling through inventory reservations
+* Manage incoming orders
+* Update order status
+* Control pickup capacity
+* Monitor peak-hour demand
+* Manage cancellations and refunds
 
-## ✨ Connecting Google Gemini API
+### Smart Queue Management
 
-1. Get a free Gemini API Key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. Open your deployed canteen app.
-3. Click the **"🔑 Gemini API Key"** button in the top navigation bar.
-4. Paste your key and click **Save & Activate**.
+The platform uses pickup-slot capacity controls to distribute orders across available time windows and reduce congestion during peak hours.
 
-### What Gemini AI Does in the Platform:
-- **👨‍🍳 Smart Kitchen Batch Prep Forecast:** Analyzes live slot fill rates (e.g. 7:00, 7:15, 7:30 peak) and recommends batch cooking quantities before kitchen queues form.
-- **💬 Student Meal Advisor:** Helps students find healthy meals, high-protein combos, or budget meals under ₹100 with zero wait time.
+### Inventory Reservation
+
+The system temporarily reserves available food inventory during the ordering process to help prevent multiple students from purchasing the same remaining stock.
+
+### Gemini AI
+
+Google Gemini AI is used for demand intelligence and can assist with analyzing order patterns, pickup-slot demand, and kitchen preparation requirements.
+
+## Technology Stack
+
+* Frontend: React
+* Backend/API: Application API layer
+* Database: PostgreSQL / Supabase
+* AI: Google Gemini
+* Authentication: Role-based authentication
+* Payment: UPI-compatible payment integration
+* QR/Token: Digital order verification
+* Deployment: Netlify
+* Version Control: GitHub
+
+## User Roles
+
+### Student
+
+Students can browse food items, check availability, place orders, schedule pickup, make payments, track orders, and verify their orders during collection.
+
+### Canteen Manager
+
+The canteen manager can manage menus, inventory, orders, pickup capacity, cancellations, refunds, and operational information.
+
+## Order Lifecycle
+
+Student selects food → Inventory reservation → Pickup slot selection → Payment → Order confirmation → Kitchen preparation → QR/token verification → Pickup → Order completion.
+
+## Project Objective
+
+The objective of Campus Canteen OS is to transform a traditional college canteen into a more efficient, transparent, and student-friendly digital ordering and queue-management system.
+
+The platform is designed with a scalable architecture that can initially support a single college canteen and later expand to multiple outlets and larger student populations.
+
+## Future Enhancements
+
+* Demand forecasting
+* Food-wastage analytics
+* Student feedback and ratings
+* Personalized recommendations
+* Multiple canteen support
+* College administration dashboard
+* Push notifications
+* Advanced analytics and reporting
+* Automated inventory forecasting
+
+## Project Status
+
+**Production-oriented MVP / Active Development**
+
+## License
+
+This project is intended for educational and demonstration purposes.
